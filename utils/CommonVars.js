@@ -3,5 +3,6 @@
 export const serverPath = 'http://localhost:8000/';
 // 通用颜色变量
 export const colors = {
-	primaryColor: '#eb6383'
+	primaryColor: '#eb6383',
+	defaultColor: '#aaaaaa'
 };

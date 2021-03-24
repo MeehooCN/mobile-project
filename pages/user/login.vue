@@ -1,6 +1,8 @@
 <template>
 	<view class="container" :style="{height: pageHeight + 'px'}">
-		<view class="link-right" @click="toPasswordLogin">密码登录</view>
+		<view class="link-right">
+			<view @click="toPasswordLogin">密码登录</view>
+		</view>
 		<view class="phone-bind-container">
 			<view class="title">手机号绑定 / 登录</view>
 			<view class="sub-title">查看专属于您的修图记录</view>

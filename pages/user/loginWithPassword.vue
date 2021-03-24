@@ -1,6 +1,8 @@
 <template>
 	<view class="container" :style="{height: pageHeight + 'px'}">
-		<view class="link-right" @click="toLogin">免密登录</view>
+		<view class="link-right">
+			<view @click="toLogin">免密登录</view>
+		</view>
 		<view class="phone-bind-container">
 			<view class="input-title">密码登录</view>
 			<view class="input-container">
@@ -60,8 +62,9 @@
 				// 验证手机号
 				const regTel = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
 				if (regTel.test(this.phoneNumber)) {
-					console.log('phoneNumber', this.phoneNumber);
-					console.log('password', this.password);
+					uni.navigateTo({
+						url: '/pages/index/index'
+					});
 				} else {
 					phoneDiv.children[0].children[1].focus();
 					uni.showToast({

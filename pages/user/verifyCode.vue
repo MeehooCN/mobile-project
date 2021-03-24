@@ -83,7 +83,9 @@
 				}
 				// 跳至登陆成功页面
 				else if (this.toUrlType === 'loginDone') {
-					console.log('登陆成功！');
+					uni.navigateTo({
+						url: '/pages/index/index'
+					});
 				}
 			},
 			// 获取验证码
