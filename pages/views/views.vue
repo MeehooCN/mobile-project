@@ -1,6 +1,6 @@
 <template>
 	<view>
-		通用页面
+		<cu-custom class="banner-primary"><block slot="content">通用页面</block></cu-custom>
 	</view>
 </template>
 
@@ -15,5 +15,6 @@
 </script>
 
 <style lang="less">
+	@import "@/static/styles/styles.less";
 
 </style>

@@ -48,6 +48,7 @@
 			onKeyUp: function(e) {
 				const index = parseInt(e.currentTarget.id.split('-')[1]);
 				const value = e.detail.value.slice(-1);
+				// 迷惑，当输入相同数字时不生效
 				this.verifyCodeList[index] = value;
 				if (index < (this.verifyCodeList.length - 1)) {
 					const inputDiv = document.getElementById('code-' + (index + 1));
@@ -175,7 +176,7 @@
 		width: 100%;
 		min-height: 50px;
 		margin-top: 2em;
-		background-color: rgba(82, 137, 118);
+		background-color: rgb(82, 137, 118);
 		border-radius: 50px;
 		box-sizing: border-box;
 		padding: 10px 20px;

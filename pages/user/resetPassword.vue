@@ -123,7 +123,7 @@
 		width: 100%;
 		min-height: 50px;
 		margin-top: 30px;
-		background-color: rgba(82, 137, 118);
+		background-color: rgb(82, 137, 118);
 		border-radius: 50px;
 		box-sizing: border-box;
 		padding: 10px 20px;
