@@ -1,3 +1,4 @@
+<!-- 忘记密码 -->
 <template>
 	<view :style="{height: pageHeight + 'px'}" class="container">
 		<cu-custom :isBack="true" bgColor="none-bg" style="background-color: rgb(86, 79, 94); color: white;"></cu-custom>

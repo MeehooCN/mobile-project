@@ -21,7 +21,13 @@
 		"path" : "pages/user/resetPassword",
 		"style" : {}
     }, {
-		"path" : "pages/views/views",
+		"path" : "pages/views/baseList",
+		"style" : {}
+    }, {
+		"path" : "pages/views/paginationList",
+		"style" : {}
+    }, {
+		"path" : "pages/views/cardList",
 		"style" : {}
     }, {
 		"path" : "pages/components/components",

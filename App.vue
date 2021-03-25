@@ -1,3 +1,4 @@
+<!-- 入口 -->
 <script>
 	import Vue from 'vue';
 	export default {

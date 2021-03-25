@@ -1,3 +1,4 @@
+<!-- 密码登录 -->
 <template>
 	<view class="container" :style="{height: pageHeight + 'px'}">
 		<view class="link-right">

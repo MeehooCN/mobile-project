@@ -1,3 +1,4 @@
+<!-- 导航 -->
 <template>
 	<view>
 		<views v-if="PageCur=='views'"></views>
@@ -34,7 +35,7 @@
 	export default {
 		data() {
 			return {
-				PageCur: 'mine',
+				PageCur: 'views',
 				colors: colors
 			}
 		},

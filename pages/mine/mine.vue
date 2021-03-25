@@ -1,6 +1,7 @@
+<!-- 个人中心 -->
 <template>
 	<view>
-		<view class="banner-primary padding-lg padding-tb-xl flex justify-between align-center">
+		<view class="banner-primary padding-lr-lg padding-tb-xl flex justify-between align-center">
 			<view class="flex align-end">
 				<view class="cu-avatar xl radius" :style="{'background-image': 'url(' + avaterUrl + ')'}"></view>
 				<view class="margin-left-lg">
@@ -9,24 +10,32 @@
 				</view>
 			</view>
 			<view>
-				<text class="cuIcon-right text-xxl"></text>
+				<text class="cuIcon-right" style="font-size: 36upx;"></text>
 			</view>
 		</view>
 		<view class="cu-list grid col-3">
 			<view class="cu-item banner-primary">
-				<view class="text-white text-xl">2</view>
-				<text>动态</text>
+				<view class="text-white text-xl">80</view>
+				<text>魔力值</text>
 			</view>
 			<view class="cu-item banner-primary">
-				<view class="text-white text-xl">2</view>
-				<text>关注</text>
+				<view class="text-white text-xl">500</view>
+				<text>麻瓜币($)</text>
 			</view>
 			<view class="cu-item banner-primary">
-				<view class="text-white text-xl">2</view>
-				<text>粉丝</text>
+				<view class="text-white text-xl">3</view>
+				<text>好友</text>
 			</view>
 		</view>
 		<view>
+			<view class="cu-list menu card-menu margin-top">
+				<view class="cu-item arrow">
+					<view class="content">
+						<text class="cuIcon-settingsfill text-grey"></text>
+						<text class="text-grey">设置</text>
+					</view>
+				</view>
+			</view>
 			<view class="cu-list menu card-menu margin-top">
 				<view class="cu-item arrow">
 					<view class="content">
@@ -50,14 +59,14 @@
 			<view class="cu-list menu card-menu margin-top">
 				<view class="cu-item arrow">
 					<view class="content">
-						<text class="cuIcon-shop text-orange"></text>
-						<text class="text-orange">对角巷</text>
+						<text class="cuIcon-shop text-grey"></text>
+						<text class="text-grey">对角巷</text>
 					</view>
 				</view>
 				<view class="cu-item arrow">
 					<view class="content">
-						<text class="cuIcon-explore text-blue"></text>
-						<text class="text-blue">麻瓜世界</text>
+						<text class="cuIcon-explore text-grey"></text>
+						<text class="text-grey">麻瓜世界</text>
 					</view>
 				</view>
 			</view>

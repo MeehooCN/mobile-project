@@ -1,7 +1,7 @@
-<!-- 注册 -->
+<!-- 卡片列表 -->
 <template>
 	<view>
-		注册
+		卡片列表
 	</view>
 </template>
 

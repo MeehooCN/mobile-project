@@ -1,7 +1,7 @@
-<!-- 注册 -->
+<!-- 分页列表 -->
 <template>
 	<view>
-		注册
+		分页列表
 	</view>
 </template>
 
