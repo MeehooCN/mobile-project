@@ -1,6 +1,6 @@
 <!-- 密码登录 -->
 <template>
-	<view class="container" :style="{height: pageHeight + 'px'}">
+	<view class="container" :style="{height: '100vh'}">
 		<view class="link-right">
 			<view @click="toLogin">免密登录</view>
 		</view>
@@ -8,10 +8,24 @@
 			<view class="input-title">密码登录</view>
 			<view class="input-container">
 				<view style="margin-right: 10px;">+86</view>
-				<input type="number" id="phoneNumber" placeholder="输入手机号码" v-model="phoneNumber" placeholder-class="input-placeholder" />
+				<input
+					:focus="focusType === 'phone'"
+					type="number"
+					id="phoneNumber"
+					placeholder="输入手机号码"
+					v-model="phoneNumber"
+					placeholder-class="input-placeholder"
+				/>
 			</view>
 			<view class="input-container">
-				<input placeholder="输入密码" id="password" password v-model="password" placeholder-class="input-placeholder" />
+				<input
+					:focus="focusType === 'password'"
+					placeholder="输入密码"
+					id="password"
+					password
+					v-model="password"
+					placeholder-class="input-placeholder"
+				/>
 			</view>
 			<view class="button-container" @click="login">
 				登录
@@ -22,13 +36,12 @@
 </template>
 
 <script>
-	import { getBrowserInterfaceSize } from '@/utils/CommonFuncs.js';
 	export default {
 		data() {
 			return {
 				phoneNumber: '',
 				password: '',
-				pageHeight: getBrowserInterfaceSize().pageHeight
+				focusType: 'phone'
 			};
 		},
 		methods: {
@@ -40,15 +53,13 @@
 			},
 			// 登录
 			login: function() {
-				const phoneDiv = document.getElementById('phoneNumber');
-				const passwordDiv = document.getElementById('password');
 				if (this.phoneNumber === '') {
 					uni.showToast({
 						title: '请输入手机号',
 						icon: 'none',
 						duration: 1000
 					});
-					phoneDiv.children[0].children[1].focus();
+					this.focusType = 'phone';
 					return;
 				}
 				if (this.password === '') {
@@ -57,17 +68,17 @@
 						icon: 'none',
 						duration: 1000
 					});
-					passwordDiv.children[0].children[1].focus();
+					this.focusType = 'password';
 					return;
 				}
 				// 验证手机号
 				const regTel = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
 				if (regTel.test(this.phoneNumber)) {
-					uni.navigateTo({
+					uni.reLaunch({
 						url: '/pages/index/index'
 					});
 				} else {
-					phoneDiv.children[0].children[1].focus();
+					this.focusType = 'phone';
 					uni.showToast({
 						title: '请输入正确的手机号',
 						icon: 'none',
@@ -97,12 +108,13 @@
 		background-repeat: no-repeat;
 		background-size: cover;
 		box-sizing: border-box;
-		background-image: url("./../../static/images/mobile-bg.jpg");
+		background-image: url("https://pic-preview.oss-cn-hangzhou.aliyuncs.com/mobile-bg.jpg");
 	}
 		
 	.link-right {
 		width: 100%;
 		padding: 20px;
+		padding-top: 200rpx;
 		box-sizing: border-box;
 		display: flex;
 		justify-content: flex-end;

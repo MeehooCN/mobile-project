@@ -1,6 +1,6 @@
 <!-- 验证码 -->
 <template>
-	<view :style="{height: pageHeight + 'px'}" class="container">
+	<view :style="{height: '100vh'}" class="container">
 		<cu-custom :isBack="true" bgColor="none-bg" style="background-color: rgb(86, 79, 94); color: white;"></cu-custom>
 		<view class="verify-code-container">
 			<view class="title">输入验证码</view>
@@ -8,13 +8,19 @@
 				<view style="margin-right: 10px;">已发送 4 位验证码至</view>
 				<view style="color: rgba(255, 255, 255, 0.5)">+86 {{phoneNumber}}</view>
 			</view>
-			<view style="margin-top: 30px; display: flex; justify-content: space-between;">
-				<view v-for="(item, index) in verifyCodeList">
-					<input :id="'code-' + index" class="verify-code-input" :key="index" type="number" maxLength="1" v-model="verifyCodeList[index]"
-					 @input="onKeyUp" placeholder-class="input-placeholder" />
+			<view class="code-container">
+				<view
+					v-for="(item, index) in verifyCodeList"
+					class="verify-code-input"
+					placeholder-class="input-placeholder"
+					:key="index"
+				>
+					{{item}}
 				</view>
+				<input class="input-class" @input="onInput" :focus="isFocus" type="number" maxlength="4" @focus="onFocus" />
 			</view>
 			<view class="button-container" @click="sure">
+                <text v-if="buttonLoading" class="cuIcon-loading2 cuIconfont-spin"></text>
 				确定
 			</view>
 			<view v-if="seconds === 0 && canGetVerifyCode" class="get-again" @click="getAgain">重新获取</view>
@@ -24,42 +30,52 @@
 </template>
 
 <script>
-	import { getBrowserInterfaceSize } from '@/utils/CommonFuncs.js';
+    import Ajax from '@/utils/Ajax.js';
 	export default {
 		data() {
 			return {
 				verifyCodeList: ['', '', '', ''],
 				phoneNumber: uni.getStorageSync('phoneNumber'),
-				pageHeight: getBrowserInterfaceSize().pageHeight,
 				seconds: Number(uni.getStorageSync('seconds')),
 				intervalId: '',
 				canGetVerifyCode: false,
-				toUrlType: ''
+				toUrlType: '',
+				isFocus: true,
+                buttonLoading: false
 			};
 		},
 		onLoad: function(option) {
 			this.toUrlType = option.toUrlType;
+            uni.setStorageSync('seconds', 60)
 		},
 		mounted() {
 			// 重置倒计时
 			this.getAgain();
 		},
 		methods: {
-			// 自动跳到下一个输入框
-			onKeyUp: function(e) {
-				const index = parseInt(e.currentTarget.id.split('-')[1]);
-				const value = e.detail.value.slice(-1);
-				// 迷惑，当输入相同数字时不生效
-				this.verifyCodeList[index] = value;
-				if (index < (this.verifyCodeList.length - 1)) {
-					const inputDiv = document.getElementById('code-' + (index + 1));
-					if (inputDiv.children[0].children[1]) {
-						inputDiv.children[0].children[1].focus();
+			// 焦点聚集
+			onFocus: function (index) {
+				this.isFocus = true;
+			},
+			// 输入数字
+			onInput: function (e) {
+				const tempList = e.detail.value.split('');
+				const length = tempList.length;
+				if (length < 4) {
+					for (let i = 0; i < (4 - length); i++) {
+						tempList.push('');
 					}
+				}
+				this.verifyCodeList = tempList;
+				if (e.detail.value.length > 4) {
+					this.isFocus = false;
 				}
 			},
 			// 确认验证码
 			sure: function() {
+                if (this.buttonLoading) {
+                    return;
+                }
 				const reg = /^\d{1,}$/;
 				// 验证验证码填入
 				for (let i = 0; i < this.verifyCodeList.length; i++) {
@@ -73,22 +89,49 @@
 					}
 				}
 				const verifyCode = this.verifyCodeList.join('');
-				const params = {
-					phoneNumber: this.phoneNumber,
-					verifyCode: verifyCode
-				};
-				// 跳至重置密码页面
-				if (this.toUrlType === 'reset') {
-					uni.navigateTo({
-						url: '/pages/user/resetPassword'
-					});
-				}
-				// 跳至登陆成功页面
-				else if (this.toUrlType === 'loginDone') {
-					uni.navigateTo({
-						url: '/pages/index/index'
-					});
-				}
+                const code = uni.getStorageSync('code');
+                uni.getProvider({
+                	service: 'oauth',
+                	success: (res) => {
+                		if (~res.provider.indexOf('weixin')) {
+                			uni.login({
+                				provider: 'weixin',
+                				success: (loginRes) => {
+                                    const params = {
+                                        code: loginRes.code,
+                                    	phone: this.phoneNumber,
+                                    	verificationCode: verifyCode
+                                    };
+                                    this.buttonLoading = true;
+                                    Ajax.get('wx/user/submitPhoneNum', params, {}, (data) => {
+                                        if (data.flag === 0) {
+                                            // 跳至重置密码页面
+                                            if (this.toUrlType === 'reset') {
+                                            	uni.navigateTo({
+                                            		url: '/pages/user/resetPassword'
+                                            	});
+                                            }
+                                            // 跳至登陆成功页面
+                                            else if (this.toUrlType === 'loginDone') {
+                                                uni.reLaunch({
+                                                    url: '/pages/index/index'
+                                                });
+                                            }
+                                        } else {
+                                            uni.showToast({
+                                                title: data.msg,
+                                                duration: 2000,
+                                            	icon: 'none'
+                                            });
+                                        }
+                                        this.buttonLoading = false;
+                                    })
+                				}
+                			});
+                		}
+                	}
+                });
+				
 			},
 			// 获取验证码
 			getAgain: function() {
@@ -97,8 +140,12 @@
 				if (this.seconds === 0) {
 					this.seconds = 60;
 					// 调接口
-					// 成功则开始倒计时
-					this.intervalSeconds();
+                    Ajax.get('wx/user/getPhoneCode?phone=' + this.phoneNumber, {}, {}, (data) => {
+                        if (data.flag === 0 || data.flag === 2) {
+                            // 成功则开始倒计时
+                            this.intervalSeconds();
+                        }
+                    })
 				} else {
 					this.intervalSeconds();
 				}
@@ -139,6 +186,22 @@
 	.verify-code-container {
 		margin: 50px 10%;
 	}
+	
+	.input-class {
+		width: 200%;
+		height: 50px;
+		position: absolute;
+		opacity: 0;
+		top: 0;
+		left: -300px;
+	}
+	
+	.code-container {
+		margin-top: 30px;
+		display: flex;
+		justify-content: space-between;
+		position: relative;
+	}
 
 	.sub-title-container {
 		display: flex;
@@ -177,7 +240,7 @@
 		width: 100%;
 		min-height: 50px;
 		margin-top: 2em;
-		background-color: rgb(82, 137, 118);
+		background-color: rgba(98, 183, 144, 0.6);
 		border-radius: 50px;
 		box-sizing: border-box;
 		padding: 10px 20px;

@@ -4,6 +4,7 @@
 		<cu-custom class="banner-primary" :isBack="true">
 			<block slot="content">基础列表</block>
 		</cu-custom>
+		<!-- 顶部进度条 -->
 		<page-loading :loadProgress="loadProgress" />
 		<view class="cu-list menu">
 			<view class="cu-item" v-for="(item, index) in baseList" :key="index" @click="toDetail()">
@@ -24,12 +25,19 @@
 			};
 		},
 		mounted() {
-			this.getBaseList();
+			this.LoadProgress();
 		},
 		methods: {
 			// 获取列表数据
 			getBaseList: function() {
-				this.LoadProgress();
+				this.loadProgress = 0;
+				const baseList = [];
+				for(let i = 0; i < 30; i++) {
+					baseList.push({
+						name: '我想要学习黑魔法 ' + (i + 1).toString()
+					})
+				}
+				this.baseList = baseList;
 			},
 			// 跳至详情
 			toDetail: function() {
@@ -43,14 +51,7 @@
 						this.LoadProgress();
 					}, 100)
 				} else {
-					this.loadProgress = 0;
-					const baseList = [];
-					for(let i = 0; i < 30; i++) {
-						baseList.push({
-							name: '我想要学习黑魔法 ' + (i + 1).toString()
-						})
-					}
-					this.baseList = baseList;
+					this.getBaseList();
 				}
 			}
 		}

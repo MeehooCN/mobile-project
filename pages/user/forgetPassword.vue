@@ -1,12 +1,18 @@
 <!-- 忘记密码 -->
 <template>
-	<view :style="{height: pageHeight + 'px'}" class="container">
+	<view :style="{height: '100vh'}" class="container">
 		<cu-custom :isBack="true" bgColor="none-bg" style="background-color: rgb(86, 79, 94); color: white;"></cu-custom>
 		<view class="phone-bind-container">
 			<view class="input-title">忘记密码</view>
 			<view class="input-container">
 				<view style="margin-right: 10px;">+86</view>
-				<input type="number" id="phoneNumber" placeholder="输入手机号码" v-model="phoneNumber" placeholder-class="input-placeholder" />
+				<input
+					:focus="focus"
+					type="number"
+					placeholder="输入手机号码"
+					v-model="phoneNumber"
+					placeholder-class="input-placeholder"
+				/>
 			</view>
 			<view class="button-container" @click="next">
 				下一步
@@ -16,17 +22,15 @@
 </template>
 
 <script>
-	import { getBrowserInterfaceSize } from '@/utils/CommonFuncs.js';
 	export default {
 		data() {
 			return {
 				phoneNumber: uni.getStorageSync('phoneNumber'),
-				pageHeight: getBrowserInterfaceSize().pageHeight
+				focus: true
 			};
 		},
 		methods: {
 			next: function() {
-				const phoneDiv = document.getElementById('phoneNumber');
 				// 验证手机号
 				const regTel = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
 				if (regTel.test(this.phoneNumber)) {
@@ -35,8 +39,9 @@
 					uni.navigateTo({
 						url: '/pages/user/verifyCode?toUrlType=reset'
 					});
+					this.focus = false;
 				} else {
-					phoneDiv.children[0].children[1].focus();
+					this.focus = true;
 					uni.showToast({
 						title: '请输入正确的手机号',
 						icon: 'none',

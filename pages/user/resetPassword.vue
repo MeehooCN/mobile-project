@@ -1,14 +1,26 @@
 <!-- 重置密码 -->
 <template>
-	<view class="container" :style="{height: pageHeight + 'px'}">
+	<view class="container" :style="{height: '100vh'}">
 		<cu-custom :isBack="true" bgColor="none-bg" style="background-color: rgb(86, 79, 94); color: white;"></cu-custom>
 		<view class="phone-bind-container">
 			<view class="input-title">重置密码</view>
 			<view class="input-container">
-				<input placeholder="请输入至少6位新密码" id="password" password v-model="password" placeholder-class="input-placeholder" />
+				<input
+					placeholder="请输入至少6位新密码"
+					password
+					v-model="password"
+					placeholder-class="input-placeholder"
+					:focus="focusType === 'password'"
+				/>
 			</view>
 			<view class="input-container">
-				<input placeholder="再次确认" id="confirmPassword" password v-model="confirmPassword" placeholder-class="input-placeholder" />
+				<input
+					placeholder="再次确认"
+					password
+					v-model="confirmPassword"
+					placeholder-class="input-placeholder"
+					:focus="focusType === 'confirmPassword'"
+				/>
 			</view>
 			<view class="button-container" @click="save">
 				保存
@@ -18,20 +30,17 @@
 </template>
 
 <script>
-	import { getBrowserInterfaceSize } from '@/utils/CommonFuncs.js';
 	export default {
 		data() {
 			return {
-				pageHeight: getBrowserInterfaceSize().pageHeight,
 				password: '',
-				confirmPassword: ''
+				confirmPassword: '',
+				focusType: 'password'
 			};
 		},
 		methods: {
 			// 确认重置密码
 			save: function() {
-				const passwordDiv = document.getElementById('password');
-				const confirmPasswordDiv = document.getElementById('confirmPassword');
 				// 验证密码
 				const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
 				if (!reg.test(this.password)) {
@@ -40,7 +49,7 @@
 						icon: 'none',
 						duration: 1000
 					});
-					passwordDiv.children[0].children[1].focus();
+					this.focusType = 'password';
 					return;
 				}
 				if (this.password !== this.confirmPassword) {
@@ -49,7 +58,7 @@
 						icon: 'none',
 						duration: 1000
 					});
-					confirmPasswordDiv.children[0].children[1].focus();
+					this.focusType = 'confirmPassword';
 					return;
 				}
 				// 保存
