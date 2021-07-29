@@ -1,7 +1,7 @@
 <!-- 组件汇总 -->
 <template>
 	<view>
-		<cu-custom class="banner-primary"><block slot="content">组件列表</block></cu-custom>
+		<cu-custom bgColor="banner-primary"><block slot="content">组件列表</block></cu-custom>
 		<view class="cu-list grid col-3">
 			<view class="cu-item" v-for="(item, index) in componentList" :key="index">
 				<text :class="item.icon" style="font-size: 40upx;"></text>

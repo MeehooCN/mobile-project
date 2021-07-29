@@ -1,7 +1,7 @@
 <!-- 页面汇总 -->
 <template>
 	<view>
-		<cu-custom class="banner-primary"><block slot="content">通用页面</block></cu-custom>
+		<cu-custom bgColor="banner-primary"><block slot="content">通用页面</block></cu-custom>
 		<view class="cu-list menu">
 			<view class="cu-item" v-for="(item, index) in viewsList" :class="item.menuArrow ? 'arrow' : ''" :key="index" @click="toOtherPage(item.toUrl)">
 				<view class="content">

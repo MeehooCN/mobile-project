@@ -1,6 +1,7 @@
 <!-- 个人中心 -->
 <template>
 	<view>
+		<cu-custom bgColor="banner-primary"><block slot="content">个人中心</block></cu-custom>
 		<view class="banner-primary padding-lr-lg padding-tb-xl flex justify-between align-center">
 			<view class="flex align-end">
 				<view class="cu-avatar xl radius" :style="{'background-image': 'url(' + avaterUrl + ')'}"></view>

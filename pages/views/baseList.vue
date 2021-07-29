@@ -1,7 +1,7 @@
 <!-- 基础列表 -->
 <template>
 	<view>
-		<cu-custom class="banner-primary" :isBack="true">
+		<cu-custom bgColor="banner-primary" :isBack="true">
 			<block slot="content">基础列表</block>
 		</cu-custom>
 		<!-- 顶部进度条 -->
